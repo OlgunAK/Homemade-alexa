@@ -19,6 +19,12 @@ def rms(frame: np.ndarray) -> float:
     return float(np.sqrt(np.mean(frame.astype(np.float32) ** 2)))
 
 
+def apply_gain(frame: np.ndarray, gain: float) -> np.ndarray:
+    if gain == 1.0:
+        return frame.copy()
+    return np.clip(frame.astype(np.float32) * gain, -32768, 32767).astype(np.int16)
+
+
 class Endpointer:
     """Konuşmanın başladığı ve bittiği yeri ses enerjisine bakarak bulur.
 
@@ -82,7 +88,7 @@ class AudioIO:
         data = self.sd.rec(n, samplerate=self.cfg.sample_rate, channels=1,
                            dtype="int16", device=self.cfg.input_device)
         self.sd.wait()
-        self.noise_floor = rms(data[:, 0])
+        self.noise_floor = rms(apply_gain(data[:, 0], self.cfg.input_gain))
         log.info("Gürültü tabanı: %.0f", self.noise_floor)
 
     def listen(self, stop: threading.Event) -> np.ndarray | None:
@@ -93,7 +99,7 @@ class AudioIO:
                                  blocksize=block, device=self.cfg.input_device) as stream:
             while not stop.is_set():
                 frame, _ = stream.read(block)
-                state = ep.feed(frame[:, 0].copy())
+                state = ep.feed(apply_gain(frame[:, 0], self.cfg.input_gain))
                 if state == "timeout":
                     return None
                 if state == "done":

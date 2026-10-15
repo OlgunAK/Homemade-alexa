@@ -25,6 +25,7 @@ audio:
   start_timeout_seconds: 8
   max_utterance_seconds: 20
   vad_multiplier: 3.0        # gürültülü odada artırın
+  input_gain: 1.0            # INMP441 gibi kısık mikrofonlarda 3-6 deneyin
   input_device: null         # `python -m sounddevice` ile cihazları listeleyin
   output_device: null
 

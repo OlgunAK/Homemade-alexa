@@ -46,6 +46,8 @@ class AudioConfig:
     max_utterance_seconds: float = 20.0
     # Gürültü tabanının kaç katı "konuşma" sayılır.
     vad_multiplier: float = 3.0
+    # Kısık mikrofonlar (ör. INMP441) için yazılımsal yükseltme.
+    input_gain: float = 1.0
     input_device: str | int | None = None
     output_device: str | int | None = None
 

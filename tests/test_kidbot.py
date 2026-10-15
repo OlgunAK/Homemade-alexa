@@ -135,3 +135,9 @@ def test_brain_network_error_speaks_friendly_message():
     brain = Brain(Config(), client=FakeClient(err))
     assert list(brain.reply("merhaba")) == [ERROR_REPLY]
     assert brain.messages == []
+
+
+def test_apply_gain_clips():
+    from kidbot.audio import apply_gain
+    out = apply_gain(np.array([100, 20000, -20000], dtype=np.int16), 3.0)
+    assert out.tolist() == [300, 32767, -32768]

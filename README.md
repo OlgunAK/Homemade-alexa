@@ -24,6 +24,8 @@ Sistem talimatı ([kidbot/prompts.py](kidbot/prompts.py)) asistanı bir öğretm
 
 ## Donanım (önerilen)
 
+Ucuz, lehimsiz, ev yapımı kurulum için parça listesi, kablo şeması ve maliyet hesabı: **[docs/DONANIM.md](docs/DONANIM.md)**
+
 | Parça | Not |
 |---|---|
 | Raspberry Pi 4 / 5 (veya Pi Zero 2 W) | Herhangi bir Linux bilgisayar ya da Mac de olur |
