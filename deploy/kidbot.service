@@ -1,0 +1,14 @@
+[Unit]
+Description=Cocuk sesli asistani
+After=network-online.target sound.target
+Wants=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/Homemade-alexa
+ExecStart=/home/pi/Homemade-alexa/.venv/bin/python -m kidbot
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

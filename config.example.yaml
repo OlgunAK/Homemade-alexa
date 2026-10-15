@@ -1,0 +1,39 @@
+# Bu dosyayı config.yaml olarak kopyalayıp düzenleyin.
+
+child:
+  name: Deniz
+  age: 6
+  interests: [dinozorlar, uzay, legolar]
+
+assistant:
+  name: Bilge                # çocuğun asistana seslendiği isim
+  model: claude-opus-5-5
+  effort: low                # low = hızlı cevap; daha derin açıklama için medium
+  max_tokens: 1024
+
+speech:
+  provider: openai           # openai | google
+  stt_model: whisper-1
+  tts_model: gpt-4o-mini-tts
+  tts_voice: nova
+  tts_speed: 0.95
+  google_voice: tr-TR-Wavenet-E
+
+audio:
+  sample_rate: 16000
+  silence_seconds: 1.2       # çocuk yavaş konuşuyorsa artırın (1.5-2.0)
+  start_timeout_seconds: 8
+  max_utterance_seconds: 20
+  vad_multiplier: 3.0        # gürültülü odada artırın
+  input_device: null         # `python -m sounddevice` ile cihazları listeleyin
+  output_device: null
+
+hardware:
+  button: gpio               # gpio (Raspberry Pi) | keyboard (Enter tuşu)
+  gpio_pin: 17               # buton: GPIO17 (pin 11) ile GND (pin 9) arası
+  led_pin: null              # isteğe bağlı LED, örn. 27
+
+session:
+  idle_turns_before_sleep: 2
+  log_dir: logs              # ebeveyn için konuşma dökümü; null = kapalı
+  daily_limit_minutes: 0     # 0 = sınırsız
