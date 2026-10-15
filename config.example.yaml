@@ -30,7 +30,11 @@ audio:
   output_device: null
 
 hardware:
-  button: gpio               # gpio (Raspberry Pi) | keyboard (Enter tuşu)
+  button: remote             # remote (Wi-Fi ESP32 hoparlör) | gpio (Raspberry Pi) | keyboard (Enter tuşu)
+  # remote için:
+  listen_port: 8765
+  device_token: degistir-beni  # ESP32 config.h -> DEVICE_TOKEN ile aynı olmalı
+  # gpio için:
   gpio_pin: 17               # buton: GPIO17 (pin 11) ile GND (pin 9) arası
   led_pin: null              # isteğe bağlı LED, örn. 27
 

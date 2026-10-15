@@ -54,10 +54,16 @@ class AudioConfig:
 
 @dataclass
 class HardwareConfig:
-    # "gpio" (Raspberry Pi butonu) veya "keyboard" (Enter tuşu, test için)
+    # "gpio" (Raspberry Pi butonu), "keyboard" (Enter tuşu, test için)
+    # veya "remote" (Wi-Fi ile bağlanan ESP32 hoparlör, bkz. firmware/)
     button: str = "keyboard"
     gpio_pin: int = 17
     led_pin: int | None = None
+    # remote: laptopta açılacak WebSocket sunucusu
+    listen_host: str = "0.0.0.0"
+    listen_port: int = 8765
+    # Cihazla aynı olmalı (firmware/kidbot_speaker/config.h -> DEVICE_TOKEN)
+    device_token: str = ""
 
 
 @dataclass

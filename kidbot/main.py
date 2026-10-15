@@ -64,7 +64,7 @@ class ParentLog:
 
 
 class Assistant:
-    def __init__(self, cfg: Config, speech: Speech, audio: AudioIO):
+    def __init__(self, cfg: Config, speech: Speech, audio, button=None):
         self.cfg = cfg
         self.speech = speech
         self.audio = audio
@@ -74,7 +74,11 @@ class Assistant:
         self.stop = threading.Event()  # aktif dinleme/konuşmayı keser
         self.wake_request = threading.Event()
         self.tts_pool = ThreadPoolExecutor(max_workers=2)
-        self.button = Button(cfg.hardware, self.on_button)
+        if button is None:
+            button = Button(cfg.hardware, self.on_button)
+        else:
+            button.on_press = self.on_button
+        self.button = button
 
     # --- buton ---
     def on_button(self) -> None:
@@ -205,7 +209,14 @@ def main() -> None:
         text_mode(cfg)
         return
     speech = make_speech(cfg.speech, cfg.child.age)
-    Assistant(cfg, speech, AudioIO(cfg.audio)).run()
+    if cfg.hardware.button == "remote":
+        # Mikrofon, hoparlör ve buton Wi-Fi üzerinden bağlanan ESP32 cihazında.
+        from .remote import RemoteDevice
+
+        device = RemoteDevice(cfg)
+        Assistant(cfg, speech, device, button=device).run()
+    else:
+        Assistant(cfg, speech, AudioIO(cfg.audio)).run()
 
 
 def text_mode(cfg: Config) -> None:

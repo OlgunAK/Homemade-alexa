@@ -2,6 +2,7 @@ anthropic>=1.14
 numpy>=1.26
 sounddevice>=0.4.6
 PyYAML>=6.0
+websockets>=13  # Wi-Fi hoparlör (hardware.button: remote)
 python-dotenv>=1.0
 # Konuşma servisi (birini seçin, config.yaml -> speech.provider)
 openai>=1.50

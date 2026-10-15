@@ -25,6 +25,25 @@ def apply_gain(frame: np.ndarray, gain: float) -> np.ndarray:
     return np.clip(frame.astype(np.float32) * gain, -32768, 32767).astype(np.int16)
 
 
+BEEP_RATE = 24000
+
+
+def beep_pcm(rate: int, freq: float = 880.0, ms: int = 120) -> bytes:
+    t = np.arange(int(rate * ms / 1000)) / rate
+    env = np.minimum(1.0, np.minimum(t, t[::-1]) * 200)
+    return (0.25 * 32767 * env * np.sin(2 * np.pi * freq * t)).astype(np.int16).tobytes()
+
+
+def resample(pcm: bytes, src_rate: int, dst_rate: int) -> bytes:
+    """16-bit mono PCM'i doğrusal aradeğerleme ile yeniden örnekler (konuşma için yeterli)."""
+    if src_rate == dst_rate or not pcm:
+        return pcm
+    x = np.frombuffer(pcm, dtype=np.int16).astype(np.float32)
+    n = int(round(len(x) * dst_rate / src_rate))
+    y = np.interp(np.linspace(0, len(x) - 1, n), np.arange(len(x)), x)
+    return y.astype(np.int16).tobytes()
+
+
 class Endpointer:
     """Konuşmanın başladığı ve bittiği yeri ses enerjisine bakarak bulur.
 
@@ -121,9 +140,6 @@ class AudioIO:
                     return
             self.sd.wait()
 
-    def beep(self, freq: float = 880.0, ms: int = 120, rate: int = 24000) -> None:
+    def beep(self) -> None:
         """Dinlemeye başladığını belli eden kısa 'bip'."""
-        t = np.arange(int(rate * ms / 1000)) / rate
-        env = np.minimum(1.0, np.minimum(t, t[::-1]) * 200)
-        tone = (0.25 * 32767 * env * np.sin(2 * np.pi * freq * t)).astype(np.int16)
-        self.play_pcm(tone.tobytes(), rate, threading.Event())
+        self.play_pcm(beep_pcm(BEEP_RATE), BEEP_RATE, threading.Event())

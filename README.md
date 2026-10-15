@@ -24,7 +24,9 @@ Sistem talimatı ([kidbot/prompts.py](kidbot/prompts.py)) asistanı bir öğretm
 
 ## Donanım (önerilen)
 
-Ucuz, lehimsiz, ev yapımı kurulum için parça listesi, kablo şeması ve maliyet hesabı: **[docs/DONANIM.md](docs/DONANIM.md)**
+Ucuz, ev yapımı kurulum için parça listesi, kablo şeması ve maliyet hesabı: **[docs/DONANIM.md](docs/DONANIM.md)**
+
+**Evde laptop varsa en kolay yol:** laptop "beyin" olur, odadaki butonlu küçük ESP32 hoparlör ona Wi-Fi ile bağlanır (~15-25 $). Yazılımı `firmware/kidbot_speaker/` klasöründe, kurulumu [docs/DONANIM.md](docs/DONANIM.md) içinde (Seçenek A).
 
 | Parça | Not |
 |---|---|
@@ -100,6 +102,8 @@ journalctl -u kidbot -f   # kayıtları izlemek için
 | `kidbot/audio.py` | Mikrofon kaydı, konuşma başı/sonu algılama, çalma, "bip" |
 | `kidbot/speech.py` | STT/TTS: OpenAI veya Google Cloud |
 | `kidbot/button.py` | GPIO butonu / LED ya da klavye |
+| `kidbot/remote.py` | Wi-Fi hoparlör sunucusu (laptop tarafı) |
+| `firmware/kidbot_speaker/` | ESP32 Wi-Fi hoparlör yazılımı (Arduino) |
 
 Testler: `pip install pytest && python -m pytest`
 
